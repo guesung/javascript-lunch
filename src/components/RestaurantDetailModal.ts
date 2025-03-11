@@ -33,7 +33,7 @@ export default class RestaurantDetailModal extends Component<null, RestaurantDet
             <div class="restaurant-detail-modal__header">
               <div class="restaurant__category">
                 <img
-                  src="./public/images/category-${CATEGORY_MAP[
+                  src="/public/images/category-${CATEGORY_MAP[
                     currentRestaurant?.category as keyof typeof CATEGORY_MAP
                   ]}.png"
                   alt="${currentRestaurant?.category ?? ''}"
@@ -41,8 +41,8 @@ export default class RestaurantDetailModal extends Component<null, RestaurantDet
                 />
               </div>
               ${currentRestaurant?.isLike
-                ? `<img src="./public/images/star_filled.svg" alt="음식점 추가" id="like__button" data-id="${currentRestaurant?.id}" />`
-                : `<img src="./public/images/star.svg" alt="음식점 추가" id="like__button" data-id="${currentRestaurant?.id}" />`}
+                ? `<img src="/public/images/star_filled.svg" alt="음식점 추가" id="like__button" data-id="${currentRestaurant?.id}" />`
+                : `<img src="/public/images/star.svg" alt="음식점 추가" id="like__button" data-id="${currentRestaurant?.id}" />`}
             </div>
             <div class="restaurant__info">
               <div class="restaurant__info--inner">
