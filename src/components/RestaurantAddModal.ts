@@ -7,6 +7,7 @@ import { CATEGORIES, DISTANCES } from '../lib/constants.ts';
 
 interface RestaurantAddModalProps {
   addRestaurant: (restaurant: RestaurantType) => void;
+  onModalClose: () => void;
 }
 
 export default class RestaurantAddModal extends Component<null, RestaurantAddModalProps> {
@@ -76,6 +77,7 @@ export default class RestaurantAddModal extends Component<null, RestaurantAddMod
 
     const modal = new Modal({
       id: 'restaurant-add-modal',
+      onModalClose: this.props?.onModalClose,
       children: html`
         <h2 class="modal-title text-title">새로운 음식점</h2>
         <form>

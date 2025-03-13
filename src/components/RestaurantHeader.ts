@@ -48,6 +48,11 @@ export default class RestaurantHeader extends Component<RestaurantHeaderState, R
   #appendRestaurantAddModal() {
     const restaurantAddModal = new RestaurantAddModal({
       addRestaurant: this.props!.addRestaurant.bind(this),
+      onModalClose: () => {
+        this.setState({
+          isRestaurantAddModalOpen: false,
+        });
+      },
     });
     if (!this.state.isRestaurantAddModalOpen) return;
 

@@ -4,6 +4,7 @@ import { html } from '../../lib/utils.ts';
 interface ModalProps {
   id: string;
   children: string;
+  onModalClose?: () => void;
 }
 
 export default class Modal extends Component<null, ModalProps> {
@@ -35,5 +36,6 @@ export default class Modal extends Component<null, ModalProps> {
 
   #removeModal() {
     this.element?.querySelector(`#${this.props?.id}`)?.remove();
+    this.props?.onModalClose?.();
   }
 }

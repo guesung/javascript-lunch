@@ -31,7 +31,6 @@ export default class RestaurantList extends Component<RestaurantListState> {
   }
 
   template() {
-    console.log(this.state.currentRestaurant);
     return html`
       <header></header>
       <section class="restaurant-tab"></section>
