@@ -1,10 +1,10 @@
 import { LOCAL_STORAGE_KEY_MAP } from '../../src/lib/constants';
 import { DEFAULT_RESTAURANT_LIST } from '../../src/lib/constants';
-import { LOCAL_HOST_URL } from './constants';
+import { PREVIEW_URL } from './constants';
 
 describe('애플리케이션 테스트 케이스', () => {
   beforeEach(() => {
-    cy.visit(LOCAL_HOST_URL);
+    cy.visit(PREVIEW_URL);
     localStorage.setItem(LOCAL_STORAGE_KEY_MAP.restaurants, JSON.stringify(DEFAULT_RESTAURANT_LIST));
   });
   describe('정상적인 경우', () => {
