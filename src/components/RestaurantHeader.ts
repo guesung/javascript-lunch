@@ -36,14 +36,17 @@ export default class RestaurantHeader extends Component<RestaurantHeaderState, R
   attachEventListener() {
     this.element?.addEventListener('click', (event) => {
       event.stopPropagation();
+      const target = event.target as HTMLElement;
 
-      this.setState({
-        isRestaurantAddModalOpen: !this.state.isRestaurantAddModalOpen,
-      });
+      if (target.closest('.gnb__button')) {
+        this.setState({
+          isRestaurantAddModalOpen: true,
+        });
+      }
     });
   }
 
-  onRender(): void {
+  onRender() {
     this.#appendRestaurantAddModal();
   }
 

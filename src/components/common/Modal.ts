@@ -2,7 +2,6 @@ import Component from '../../core/Component.ts';
 import { html } from '../../lib/utils.ts';
 
 interface ModalProps {
-  id: string;
   children: string;
   onModalClose?: () => void;
 }
@@ -10,7 +9,7 @@ interface ModalProps {
 export default class Modal extends Component<null, ModalProps> {
   template() {
     return html`
-      <div class="modal modal--open" id="${this.props?.id ?? ''}">
+      <div class="modal modal--open">
         <div class="modal-backdrop"></div>
         <div class="modal-container">${this.props?.children ?? ''}</div>
       </div>
@@ -36,7 +35,7 @@ export default class Modal extends Component<null, ModalProps> {
   }
 
   #removeModal() {
-    this.element?.querySelector(`#${this.props?.id}`)?.remove();
+    this.element?.remove();
     this.props?.onModalClose?.();
   }
 }

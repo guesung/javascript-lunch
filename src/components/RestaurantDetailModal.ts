@@ -39,7 +39,6 @@ export default class RestaurantDetailModal extends Component<null, RestaurantDet
 
     this.appendChild(
       new Modal({
-        id: 'restaurant-detail-modal',
         onModalClose: this.props?.onModalClose,
         children: html`
           <div class="restaurant-detail-modal">

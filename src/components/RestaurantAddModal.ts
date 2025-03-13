@@ -76,8 +76,7 @@ export default class RestaurantAddModal extends Component<null, RestaurantAddMod
     });
 
     const modal = new Modal({
-      id: 'restaurant-add-modal',
-      onModalClose: this.props?.onModalClose,
+      onModalClose: this.props?.onModalClose.bind(this),
       children: html`
         <h2 class="modal-title text-title">새로운 음식점</h2>
         <form>
@@ -99,6 +98,7 @@ export default class RestaurantAddModal extends Component<null, RestaurantAddMod
       const modalInput = { ...Object.fromEntries(formData), id };
 
       this.props?.addRestaurant(modalInput as unknown as RestaurantType);
+      this.element?.remove();
     });
   }
 }
