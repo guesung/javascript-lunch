@@ -6,7 +6,7 @@ interface ModalProps {
   children: string;
 }
 
-export default class Modal extends Component<ModalProps> {
+export default class Modal extends Component<null, ModalProps> {
   template() {
     return html`
       <div class="modal modal--open" id="${this.props?.id ?? ''}">
