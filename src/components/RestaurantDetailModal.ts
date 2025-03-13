@@ -5,7 +5,10 @@ import { Button } from './common/index.ts';
 import { CATEGORY_MAP } from '../lib/constants.ts';
 import { html } from '../lib/utils.ts';
 
-interface RestaurantDetailModalProps extends RestaurantType {}
+interface RestaurantDetailModalProps {
+  currentRestaurant: RestaurantType | null;
+  deleteRestaurant: (id: string) => void;
+}
 
 export default class RestaurantDetailModal extends Component<null, RestaurantDetailModalProps | null> {
   template() {
@@ -17,12 +20,12 @@ export default class RestaurantDetailModal extends Component<null, RestaurantDet
   }
 
   #appendRestaurantDetailModal() {
-    const currentRestaurant = this.props ?? null;
+    const currentRestaurant = this.props?.currentRestaurant ?? null;
 
     const deleteButton = new Button({
       type: 'button',
       class: 'button--secondary',
-      id: 'modal-delete',
+      id: 'restaurant-delete',
       message: '삭제하기',
     });
 
@@ -72,5 +75,18 @@ export default class RestaurantDetailModal extends Component<null, RestaurantDet
         `,
       }).render(),
     );
+  }
+
+  attachEventListener() {
+    this.element.addEventListener('click', (event) => {
+      if (!event.target) return;
+
+      const target = event.target as HTMLElement;
+
+      if (target.closest('#restaurant-delete')) {
+        this.props?.deleteRestaurant(this.props?.currentRestaurant?.id ?? '');
+        return;
+      }
+    });
   }
 }

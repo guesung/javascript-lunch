@@ -17,11 +17,6 @@ export default class Modal extends Component<ModalProps> {
   }
 
   attachEventListener() {
-    this.#attachClickEventListener();
-    this.#attachKeyDownEventListener();
-  }
-
-  #attachClickEventListener() {
     this.element?.addEventListener('click', (event) => {
       if (!event.target) return;
 
@@ -32,9 +27,7 @@ export default class Modal extends Component<ModalProps> {
         return;
       }
     });
-  }
 
-  #attachKeyDownEventListener() {
     this.element.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') this.#removeModal();
     });

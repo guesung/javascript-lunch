@@ -66,11 +66,6 @@ export default class RestaurantList extends Component<RestaurantListState> {
         this.element.querySelector('#restaurant-detail-modal')?.classList.add('modal--open');
         return;
       }
-
-      if (target.closest('#modal-delete')) {
-        this.#deleteRestaurant(this.state.currentRestaurant?.id ?? '');
-        return;
-      }
     });
   }
 
@@ -167,7 +162,10 @@ export default class RestaurantList extends Component<RestaurantListState> {
   }
 
   #appendRestaurantDetailModal() {
-    const restaurantDetailModal = new RestaurantDetailModal(this.state.currentRestaurant);
+    const restaurantDetailModal = new RestaurantDetailModal({
+      currentRestaurant: this.state.currentRestaurant,
+      deleteRestaurant: this.#deleteRestaurant.bind(this),
+    });
     this.appendChild(restaurantDetailModal.render(), '.restaurant-detail-modal');
   }
 
