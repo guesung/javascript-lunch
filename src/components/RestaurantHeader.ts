@@ -1,12 +1,27 @@
 import Component from '../core/Component.ts';
 import { html } from '../lib/utils.ts';
+import RestaurantAddModal from './RestaurantAddModal.ts';
+import type { RestaurantType } from '../lib/types.ts';
 
-interface HeaderProps {
+interface RestaurantHeaderProps {
   title: string;
   alt: string;
+  addRestaurant: (restaurant: RestaurantType) => void;
 }
 
-export default class RestaurantHeader extends Component<null, HeaderProps> {
+interface RestaurantHeaderState {
+  isRestaurantAddModalOpen: boolean;
+}
+
+export default class RestaurantHeader extends Component<RestaurantHeaderState, RestaurantHeaderProps> {
+  constructor(props?: RestaurantHeaderProps) {
+    super(props);
+
+    this.state = {
+      isRestaurantAddModalOpen: false,
+    };
+  }
+
   template() {
     return html`
       <header class="gnb">
@@ -20,7 +35,22 @@ export default class RestaurantHeader extends Component<null, HeaderProps> {
 
   attachEventListener() {
     this.element?.addEventListener('click', () => {
-      document.querySelector('#restaurant-add-modal')?.classList.add('modal--open');
+      this.setState({
+        isRestaurantAddModalOpen: !this.state.isRestaurantAddModalOpen,
+      });
     });
+  }
+
+  onRender(): void {
+    this.#appendRestaurantAddModal();
+  }
+
+  #appendRestaurantAddModal() {
+    const restaurantAddModal = new RestaurantAddModal({
+      addRestaurant: this.props!.addRestaurant.bind(this),
+    });
+    if (!this.state.isRestaurantAddModalOpen) return;
+
+    document.body.appendChild(restaurantAddModal.render());
   }
 }

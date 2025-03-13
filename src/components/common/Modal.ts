@@ -9,7 +9,7 @@ interface ModalProps {
 export default class Modal extends Component<ModalProps> {
   template() {
     return html`
-      <div class="modal" id="${this.props?.id ?? ''}">
+      <div class="modal modal--open" id="${this.props?.id ?? ''}">
         <div class="modal-backdrop"></div>
         <div class="modal-container">${this.props?.children ?? ''}</div>
       </div>
@@ -28,12 +28,12 @@ export default class Modal extends Component<ModalProps> {
       }
     });
 
-    this.element.addEventListener('keydown', (event) => {
+    window.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') this.#removeModal();
     });
   }
 
   #removeModal() {
-    this.element?.querySelector(`#${this.props?.id}`)?.classList.remove('modal--open');
+    this.element?.querySelector(`#${this.props?.id}`)?.remove();
   }
 }

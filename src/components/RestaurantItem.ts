@@ -3,7 +3,9 @@ import { CATEGORY_MAP } from '../lib/constants.ts';
 import type { RestaurantType } from '../lib/types.ts';
 import { html } from '../lib/utils.ts';
 
-interface RestaurantProps extends RestaurantType {}
+interface RestaurantProps extends RestaurantType {
+  setCurrentRestaurant: (id: string) => void;
+}
 
 export default class RestaurantItem extends Component<null, RestaurantProps> {
   template() {
@@ -30,5 +32,20 @@ export default class RestaurantItem extends Component<null, RestaurantProps> {
         <p class="restaurant__description text-body">${this.props?.description ?? ''}</p>
       </div>
     </li>`;
+  }
+
+  attachEventListener() {
+    this.element.addEventListener('click', (event) => {
+      if (!event.target) return;
+
+      const target = event.target as HTMLElement;
+
+      const restaurantId = (target.closest('.restaurant') as HTMLElement).dataset.id;
+      if (!restaurantId) return;
+
+      this.props?.setCurrentRestaurant(restaurantId);
+      this.element.querySelector('#restaurant-detail-modal')?.classList.add('modal--open');
+      return;
+    });
   }
 }
