@@ -6,9 +6,14 @@ export const CATEGORY_MAP = {
   아시안: 'asian',
   기타: 'etc',
 } as const;
+export const CATEGORIES = Object.keys(CATEGORY_MAP);
+export const DISTANCES = [5, 10, 15, 20, 30];
+export const FILTERS = ['전체', ...CATEGORIES];
+export const SORTS = ['이름순', '거리순'];
 
-export const RESTAURANT_LIST_DEFAULT = [
+export const DEFAULT_RESTAURANT_LIST = [
   {
+    id: '1',
     category: '한식',
     name: '피양콩할마니',
     distance: 10,
@@ -18,6 +23,7 @@ export const RESTAURANT_LIST_DEFAULT = [
     url: 'https://naver.me/G6DyD9tg',
   },
   {
+    id: '2',
     category: '중식',
     name: '친친',
     distance: 5,
@@ -26,6 +32,7 @@ export const RESTAURANT_LIST_DEFAULT = [
     url: 'https://naver.me/G6DyD9tg',
   },
   {
+    id: '3',
     category: '일식',
     name: '잇쇼우',
     distance: 10,
@@ -35,6 +42,7 @@ export const RESTAURANT_LIST_DEFAULT = [
     url: 'https://naver.me/G6DyD9tg',
   },
   {
+    id: '4',
     category: '양식',
     name: '이태리키친',
     distance: 20,
@@ -43,6 +51,7 @@ export const RESTAURANT_LIST_DEFAULT = [
     url: 'https://naver.me/G6DyD9tg',
   },
   {
+    id: '5',
     category: '아시안',
     name: '호아빈 삼성점',
     distance: 15,
@@ -51,6 +60,7 @@ export const RESTAURANT_LIST_DEFAULT = [
     url: 'https://naver.me/G6DyD9tg',
   },
   {
+    id: '6',
     category: '기타',
     name: '도스타코스 선릉점',
     distance: 5,

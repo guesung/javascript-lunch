@@ -35,7 +35,7 @@
 /* 음식점 목록 *****************************************/
 
 /* 카테고리/정렬 필터 */
-.restaurant-filter-container {
+.restaurant-filter-sort {
   display: flex;
   justify-content: space-between;
 
@@ -43,7 +43,7 @@
   margin-top: 24px;
 }
 
-.restaurant-filter-container select {
+.restaurant-filter-sort select {
   height: 44px;
   min-width: 125px;
 
@@ -69,6 +69,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .restaurant__tab-item--active {
@@ -92,6 +93,7 @@
   padding: 16px 8px;
 
   border-bottom: 1px solid #e9eaed;
+  cursor: pointer;
 }
 
 .restaurant__category {
@@ -173,6 +175,12 @@
 
   border-radius: 8px 8px 0px 0px;
   background: var(--grey-100);
+
+  max-width: 600px;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .modal-title {
