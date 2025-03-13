@@ -1,15 +1,8 @@
-import Component from './core/Component.ts';
-import { FILTERS, LOCAL_STORAGE_KEY_MAP, SORTS } from './lib/constants.ts';
-import type { FilterType, RestaurantType, SortType, TabType } from './lib/types.ts';
 import { Select } from './components/common/index.ts';
-import {
-  RestaurantItem,
-  RestaurantDetailModal,
-  RestaurantTab,
-  RestaurantHeader,
-  RestaurantList,
-} from './components/index.ts';
-import { DEFAULT_RESTAURANT_LIST } from './lib/constants.ts';
+import { RestaurantDetailModal, RestaurantHeader, RestaurantList, RestaurantTab } from './components/index.ts';
+import Component from './core/Component.ts';
+import { DEFAULT_RESTAURANT_LIST, FILTERS, LOCAL_STORAGE_KEY_MAP, SORTS } from './lib/constants.ts';
+import type { FilterType, RestaurantType, SortType, TabType } from './lib/types.ts';
 import { html } from './lib/utils.ts';
 
 interface RestaurantListState {
@@ -129,6 +122,7 @@ export default class Application extends Component<RestaurantListState> {
     const restaurantDetailModal = new RestaurantDetailModal({
       currentRestaurant: this.state.currentRestaurant,
       deleteRestaurant: this.#deleteRestaurant.bind(this),
+      onModalClose: () => this.setState({ currentRestaurant: null }),
     });
 
     if (!this.state.currentRestaurant) return;

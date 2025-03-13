@@ -8,6 +8,7 @@ import { html } from '../lib/utils.ts';
 interface RestaurantDetailModalProps {
   currentRestaurant: RestaurantType | null;
   deleteRestaurant: (id: string) => void;
+  onModalClose: () => void;
 }
 
 export default class RestaurantDetailModal extends Component<null, RestaurantDetailModalProps | null> {
@@ -39,6 +40,7 @@ export default class RestaurantDetailModal extends Component<null, RestaurantDet
     this.appendChild(
       new Modal({
         id: 'restaurant-detail-modal',
+        onModalClose: this.props?.onModalClose,
         children: html`
           <div class="restaurant-detail-modal">
             <div class="restaurant-detail-modal__header">

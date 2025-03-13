@@ -5,6 +5,7 @@ import { html } from '../lib/utils.ts';
 
 interface RestaurantProps extends RestaurantType {
   setCurrentRestaurant: (id: string) => void;
+  onModalClose: () => void;
 }
 
 export default class RestaurantItem extends Component<null, RestaurantProps> {
