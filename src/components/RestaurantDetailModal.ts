@@ -79,6 +79,7 @@ export default class RestaurantDetailModal extends Component<null, RestaurantDet
 
   attachEventListener() {
     this.element.addEventListener('click', (event) => {
+      event.stopPropagation();
       if (!event.target) return;
 
       const target = event.target as HTMLElement;

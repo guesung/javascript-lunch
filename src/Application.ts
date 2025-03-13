@@ -2,7 +2,13 @@ import Component from './core/Component.ts';
 import { FILTERS, LOCAL_STORAGE_KEY_MAP, SORTS } from './lib/constants.ts';
 import type { FilterType, RestaurantType, SortType, TabType } from './lib/types.ts';
 import { Select } from './components/common/index.ts';
-import { RestaurantItem, RestaurantDetailModal, RestaurantTab, RestaurantHeader } from './components/index.ts';
+import {
+  RestaurantItem,
+  RestaurantDetailModal,
+  RestaurantTab,
+  RestaurantHeader,
+  RestaurantList,
+} from './components/index.ts';
 import { DEFAULT_RESTAURANT_LIST } from './lib/constants.ts';
 import { html } from './lib/utils.ts';
 
@@ -14,7 +20,7 @@ interface RestaurantListState {
   currentRestaurant: RestaurantType | null;
 }
 
-export default class RestaurantList extends Component<RestaurantListState> {
+export default class Application extends Component<RestaurantListState> {
   constructor() {
     super();
 
@@ -35,57 +41,10 @@ export default class RestaurantList extends Component<RestaurantListState> {
       <header></header>
       <section class="restaurant-tab"></section>
       <section class="restaurant-filter-sort"></section>
-      <section class="restaurant-list-container">
-        <ul class="restaurant-list"></ul>
-      </section>
+      <section class="restaurant-list-container"></section>
       <section class="restaurant-add-modal"></section>
       <section class="restaurant-detail-modal"></section>
     `;
-  }
-
-  /**
-   * 이벤트 리스너
-   */
-
-  attachEventListener() {
-    this.element.addEventListener('click', (event) => {
-      if (!event.target) return;
-
-      const target = event.target as HTMLElement;
-
-      if (target.closest('#like__button') && target.dataset.id) {
-        this.#toggleLike(target.dataset.id);
-        return;
-      }
-    });
-  }
-
-  #setCurrentRestaurant(id: string) {
-    this.setState({
-      currentRestaurant: this.state.restaurants.find((restaurant) => restaurant.id === id),
-    });
-  }
-
-  #deleteRestaurant(id: string) {
-    this.setState({
-      restaurants: this.state.restaurants.filter((restaurant) => restaurant.id !== id),
-    });
-    localStorage.setItem(LOCAL_STORAGE_KEY_MAP.restaurants, JSON.stringify(this.state.restaurants));
-  }
-
-  #toggleLike(restaurantName: string) {
-    const copiedRestaurants = [...this.state.restaurants];
-
-    const currentRestaurantIndex = this.state.restaurants.findIndex((restaurant) => restaurant.id === restaurantName);
-    const targetRestaurant = this.state.restaurants[currentRestaurantIndex];
-
-    copiedRestaurants.splice(currentRestaurantIndex, 1, { ...targetRestaurant, isLike: !targetRestaurant.isLike });
-
-    this.setState({
-      restaurants: copiedRestaurants,
-    });
-
-    localStorage.setItem(LOCAL_STORAGE_KEY_MAP.restaurants, JSON.stringify(this.state.restaurants));
   }
 
   /**
@@ -93,6 +52,14 @@ export default class RestaurantList extends Component<RestaurantListState> {
    */
 
   onRender() {
+    this.#appendRestaurantHeader();
+    this.#appendRestaurantTab();
+    this.#appendRestaurantFilterSelectSort();
+    this.#appendRestaurantList();
+    this.#appendRestaurantDetailModal();
+  }
+
+  #appendRestaurantHeader() {
     this.appendChild(
       new RestaurantHeader({
         title: '오늘 뭐 먹지',
@@ -101,10 +68,6 @@ export default class RestaurantList extends Component<RestaurantListState> {
       }).render(),
       'header',
     );
-    this.#appendRestaurantTab();
-    this.#appendRestaurantFilterSelectSort();
-    this.#appendRestaurantList();
-    this.#appendRestaurantDetailModal();
   }
 
   #appendRestaurantTab() {
@@ -153,12 +116,13 @@ export default class RestaurantList extends Component<RestaurantListState> {
         this.state.sort === '이름순' ? (a.name < b.name ? -1 : a.name > b.name ? 1 : 0) : a.distance - b.distance,
       );
 
-    filteredRestaurants.forEach((restaurant) => {
-      this.appendChild(
-        new RestaurantItem({ ...restaurant, setCurrentRestaurant: this.#setCurrentRestaurant.bind(this) }).render(),
-        '.restaurant-list',
-      );
-    });
+    this.appendChild(
+      new RestaurantList({
+        restaurants: filteredRestaurants,
+        setCurrentRestaurant: this.#setCurrentRestaurant.bind(this),
+      }).render(),
+      '.restaurant-list-container',
+    );
   }
 
   #appendRestaurantDetailModal() {
@@ -174,6 +138,52 @@ export default class RestaurantList extends Component<RestaurantListState> {
   #addRestaurant(restaurant: RestaurantType) {
     this.setState({
       restaurants: [...this.state.restaurants, restaurant],
+    });
+
+    localStorage.setItem(LOCAL_STORAGE_KEY_MAP.restaurants, JSON.stringify(this.state.restaurants));
+  }
+
+  /**
+   * 이벤트 리스너
+   */
+
+  attachEventListener() {
+    this.element.addEventListener('click', (event) => {
+      event.stopPropagation();
+      if (!event.target) return;
+
+      const target = event.target as HTMLElement;
+
+      if (target.closest('#like__button') && target.dataset.id) {
+        this.#toggleLike(target.dataset.id);
+        return;
+      }
+    });
+  }
+
+  #setCurrentRestaurant(id: string) {
+    this.setState({
+      currentRestaurant: this.state.restaurants.find((restaurant) => restaurant.id === id),
+    });
+  }
+
+  #deleteRestaurant(id: string) {
+    this.setState({
+      restaurants: this.state.restaurants.filter((restaurant) => restaurant.id !== id),
+    });
+    localStorage.setItem(LOCAL_STORAGE_KEY_MAP.restaurants, JSON.stringify(this.state.restaurants));
+  }
+
+  #toggleLike(restaurantName: string) {
+    const copiedRestaurants = [...this.state.restaurants];
+
+    const currentRestaurantIndex = this.state.restaurants.findIndex((restaurant) => restaurant.id === restaurantName);
+    const targetRestaurant = this.state.restaurants[currentRestaurantIndex];
+
+    copiedRestaurants.splice(currentRestaurantIndex, 1, { ...targetRestaurant, isLike: !targetRestaurant.isLike });
+
+    this.setState({
+      restaurants: copiedRestaurants,
     });
 
     localStorage.setItem(LOCAL_STORAGE_KEY_MAP.restaurants, JSON.stringify(this.state.restaurants));

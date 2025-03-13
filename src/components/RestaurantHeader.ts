@@ -34,7 +34,9 @@ export default class RestaurantHeader extends Component<RestaurantHeaderState, R
   }
 
   attachEventListener() {
-    this.element?.addEventListener('click', () => {
+    this.element?.addEventListener('click', (event) => {
+      event.stopPropagation();
+
       this.setState({
         isRestaurantAddModalOpen: !this.state.isRestaurantAddModalOpen,
       });

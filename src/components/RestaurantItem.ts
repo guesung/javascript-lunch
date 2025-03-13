@@ -36,6 +36,7 @@ export default class RestaurantItem extends Component<null, RestaurantProps> {
 
   attachEventListener() {
     this.element.addEventListener('click', (event) => {
+      event.stopPropagation();
       if (!event.target) return;
 
       const target = event.target as HTMLElement;

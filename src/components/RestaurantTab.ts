@@ -32,6 +32,7 @@ export default class RestaurantTab extends Component<null, RestaurantTabProps> {
   attachEventListener() {
     this.element?.querySelectorAll('.restaurant__tab-item').forEach((tabItem) => {
       tabItem.addEventListener('click', (event) => {
+        event.stopPropagation();
         this.props?.setTab((event?.currentTarget as HTMLDivElement)?.dataset.tab as TabType);
       });
     });

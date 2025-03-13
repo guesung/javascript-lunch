@@ -19,6 +19,7 @@ export default class Modal extends Component<null, ModalProps> {
 
   attachEventListener() {
     this.element?.addEventListener('click', (event) => {
+      event.stopPropagation();
       if (!event.target) return;
 
       const target = event.target as HTMLElement;
