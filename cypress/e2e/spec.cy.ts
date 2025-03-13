@@ -109,7 +109,7 @@ describe('애플리케이션 테스트 케이스', () => {
 
       cy.get('select[name="category"]')
         .invoke('prop', 'validationMessage')
-        .should('equal', '목록에서 항목을 선택하세요.');
+        .should('equal', 'Please select an item in the list.');
     });
     it('이름을 입력하지 않으면 음식점을 추가할 수 없다.', () => {
       cy.get('.gnb__button').click();
@@ -118,7 +118,7 @@ describe('애플리케이션 테스트 케이스', () => {
 
       cy.get('#modal-add').click();
 
-      cy.get('input[name="name"]').invoke('prop', 'validationMessage').should('equal', '이 입력란을 작성하세요.');
+      cy.get('input[name="name"]').invoke('prop', 'validationMessage').should('equal', 'Please fill out this field.');
     });
     it('거리를 선택하지 않으면 음식점을 추가할 수 없다.', () => {
       cy.get('.gnb__button').click();
@@ -129,7 +129,7 @@ describe('애플리케이션 테스트 케이스', () => {
 
       cy.get('select[name="distance"]')
         .invoke('prop', 'validationMessage')
-        .should('equal', '목록에서 항목을 선택하세요.');
+        .should('equal', 'Please select an item in the list.');
     });
   });
 });
