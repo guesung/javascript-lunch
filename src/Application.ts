@@ -35,6 +35,7 @@ export default class Application extends Component<RestaurantListState> {
       <section class="restaurant-tab"></section>
       <section class="restaurant-filter-sort"></section>
       <section class="restaurant-list-container"></section>
+
       <section class="restaurant-add-modal"></section>
       <section class="restaurant-detail-modal"></section>
     `;
@@ -122,11 +123,24 @@ export default class Application extends Component<RestaurantListState> {
     const restaurantDetailModal = new RestaurantDetailModal({
       currentRestaurant: this.state.currentRestaurant,
       deleteRestaurant: this.#deleteRestaurant.bind(this),
-      onModalClose: () => this.setState({ currentRestaurant: null }),
+      onModalClose: this.#closeRestaurantDetailModal.bind(this),
     });
 
     if (!this.state.currentRestaurant) return;
     this.appendChild(restaurantDetailModal.render(), '.restaurant-detail-modal');
+  }
+
+  #deleteRestaurant(id: string) {
+    this.setState({
+      restaurants: this.state.restaurants.filter((restaurant) => restaurant.id !== id),
+    });
+    localStorage.setItem(LOCAL_STORAGE_KEY_MAP.restaurants, JSON.stringify(this.state.restaurants));
+  }
+
+  #closeRestaurantDetailModal() {
+    this.setState({
+      currentRestaurant: null,
+    });
   }
 
   #addRestaurant(restaurant: RestaurantType) {
@@ -159,13 +173,6 @@ export default class Application extends Component<RestaurantListState> {
     this.setState({
       currentRestaurant: this.state.restaurants.find((restaurant) => restaurant.id === id),
     });
-  }
-
-  #deleteRestaurant(id: string) {
-    this.setState({
-      restaurants: this.state.restaurants.filter((restaurant) => restaurant.id !== id),
-    });
-    localStorage.setItem(LOCAL_STORAGE_KEY_MAP.restaurants, JSON.stringify(this.state.restaurants));
   }
 
   #toggleLike(restaurantName: string) {
