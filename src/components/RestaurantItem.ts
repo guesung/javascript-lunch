@@ -6,6 +6,7 @@ import { html } from '../lib/utils.ts';
 interface RestaurantProps extends RestaurantType {
   setCurrentRestaurant: (id: string) => void;
   onModalClose: () => void;
+  onRestaurantLike: (id: string) => void;
 }
 
 export default class RestaurantItem extends Component<null, RestaurantProps> {
@@ -47,6 +48,23 @@ export default class RestaurantItem extends Component<null, RestaurantProps> {
 
       this.props?.setCurrentRestaurant(restaurantId);
       this.element.querySelector('#restaurant-detail-modal')?.classList.add('modal--open');
+      return;
+    });
+
+    this.element?.querySelector('#like__button')?.addEventListener('click', (event) => {
+      event.stopPropagation();
+      if (!event.target) return;
+
+      const target = event.target as HTMLElement;
+
+      const restaurantId = (target.closest('.restaurant') as HTMLElement).dataset.id;
+      if (!restaurantId) return;
+
+      console.log(1);
+      this.props?.onRestaurantLike(restaurantId);
+      console.log(2);
+      this.props?.onModalClose();
+      console.log(3);
       return;
     });
   }

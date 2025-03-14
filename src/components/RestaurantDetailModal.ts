@@ -9,6 +9,7 @@ interface RestaurantDetailModalProps {
   currentRestaurant: RestaurantType | null;
   deleteRestaurant: (id: string) => void;
   onModalClose: () => void;
+  onRestaurantLike: (id: string) => void;
 }
 
 export default class RestaurantDetailModal extends Component<null, RestaurantDetailModalProps | null> {
@@ -89,6 +90,18 @@ export default class RestaurantDetailModal extends Component<null, RestaurantDet
       if (target.closest('#restaurant-delete')) {
         this.props?.deleteRestaurant(this.props?.currentRestaurant?.id ?? '');
         this.props?.onModalClose?.();
+        return;
+      }
+    });
+
+    modalContainer?.addEventListener('click', (event) => {
+      event.stopPropagation();
+      if (!event.target) return;
+
+      const target = event.target as HTMLElement;
+
+      if (target.closest('#like__button') && target.dataset.id) {
+        this.props?.onRestaurantLike(target.dataset.id);
         return;
       }
     });

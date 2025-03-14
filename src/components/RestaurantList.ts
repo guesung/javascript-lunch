@@ -6,6 +6,8 @@ import RestaurantItem from './RestaurantItem';
 interface RestaurantListProps {
   restaurants: RestaurantType[];
   setCurrentRestaurant: (restaurantId: string) => void;
+  onRestaurantLike: (restaurantId: string) => void;
+  onModalClose: () => void;
 }
 
 export default class RestaurantList extends Component<null, RestaurantListProps> {
@@ -16,7 +18,12 @@ export default class RestaurantList extends Component<null, RestaurantListProps>
   attachEventListener() {
     this.props?.restaurants.forEach((restaurant) => {
       this.appendChild(
-        new RestaurantItem({ ...restaurant, setCurrentRestaurant: this.props!.setCurrentRestaurant }).render(),
+        new RestaurantItem({
+          ...restaurant,
+          onModalClose: this.props!.onModalClose,
+          setCurrentRestaurant: this.props!.setCurrentRestaurant,
+          onRestaurantLike: this.props!.onRestaurantLike,
+        }).render(),
         '.restaurant-list',
       );
     });

@@ -114,6 +114,8 @@ export default class Application extends Component<RestaurantListState> {
       new RestaurantList({
         restaurants: filteredRestaurants,
         setCurrentRestaurant: this.#setCurrentRestaurant.bind(this),
+        onRestaurantLike: this.#toggleLike.bind(this),
+        onModalClose: this.#handleCloseRestaurantDetailModal.bind(this),
       }).render(),
       '.restaurant-list-container',
     );
@@ -124,6 +126,7 @@ export default class Application extends Component<RestaurantListState> {
       currentRestaurant: this.state.currentRestaurant,
       deleteRestaurant: this.#deleteRestaurant.bind(this),
       onModalClose: this.#handleCloseRestaurantDetailModal.bind(this),
+      onRestaurantLike: this.#toggleLike.bind(this),
     });
 
     if (!this.state.currentRestaurant) return;
@@ -138,6 +141,7 @@ export default class Application extends Component<RestaurantListState> {
   }
 
   #handleCloseRestaurantDetailModal() {
+    console.log(1);
     this.setState({
       currentRestaurant: null,
     });
@@ -155,19 +159,19 @@ export default class Application extends Component<RestaurantListState> {
    * 이벤트 리스너
    */
 
-  attachEventListener() {
-    this.element.addEventListener('click', (event) => {
-      event.stopPropagation();
-      if (!event.target) return;
+  // attachEventListener() {
+  //   this.element.addEventListener('click', (event) => {
+  //     event.stopPropagation();
+  //     if (!event.target) return;
 
-      const target = event.target as HTMLElement;
+  //     const target = event.target as HTMLElement;
 
-      if (target.closest('#like__button') && target.dataset.id) {
-        this.#toggleLike(target.dataset.id);
-        return;
-      }
-    });
-  }
+  //     if (target.closest('#like__button') && target.dataset.id) {
+  //       this.#toggleLike(target.dataset.id);
+  //       return;
+  //     }
+  //   });
+  // }
 
   #setCurrentRestaurant(id: string) {
     this.setState({
