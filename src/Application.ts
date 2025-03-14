@@ -123,7 +123,7 @@ export default class Application extends Component<RestaurantListState> {
     const restaurantDetailModal = new RestaurantDetailModal({
       currentRestaurant: this.state.currentRestaurant,
       deleteRestaurant: this.#deleteRestaurant.bind(this),
-      onModalClose: this.#closeRestaurantDetailModal.bind(this),
+      onModalClose: this.#handleCloseRestaurantDetailModal.bind(this),
     });
 
     if (!this.state.currentRestaurant) return;
@@ -137,7 +137,7 @@ export default class Application extends Component<RestaurantListState> {
     localStorage.setItem(LOCAL_STORAGE_KEY_MAP.restaurants, JSON.stringify(this.state.restaurants));
   }
 
-  #closeRestaurantDetailModal() {
+  #handleCloseRestaurantDetailModal() {
     this.setState({
       currentRestaurant: null,
     });

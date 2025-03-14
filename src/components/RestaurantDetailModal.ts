@@ -79,7 +79,8 @@ export default class RestaurantDetailModal extends Component<null, RestaurantDet
   }
 
   attachEventListener() {
-    this.element.addEventListener('click', (event) => {
+    const modalContainer = this.element?.querySelector('.modal-container');
+    modalContainer?.addEventListener('click', (event) => {
       event.stopPropagation();
       if (!event.target) return;
 
@@ -87,6 +88,7 @@ export default class RestaurantDetailModal extends Component<null, RestaurantDet
 
       if (target.closest('#restaurant-delete')) {
         this.props?.deleteRestaurant(this.props?.currentRestaurant?.id ?? '');
+        this.props?.onModalClose?.();
         return;
       }
     });
