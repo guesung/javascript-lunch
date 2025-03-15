@@ -1,7 +1,9 @@
 import { DEFAULT_RESTAURANT_LIST, LOCAL_STORAGE_KEY_MAP } from '../../src/lib/constants';
-import { ERROR_MESSAGES, PREVIEW_URL } from './constants';
+import { ERROR_MESSAGES, LOCAL_HOST_URL, PREVIEW_URL } from './constants';
 
-const URL = PREVIEW_URL; // TODO: 환경에 따라 다른 URL 사용
+const isCI = process.env.GITHUB_ACTIONS === 'true';
+
+const URL = isCI ? PREVIEW_URL : LOCAL_HOST_URL; // TODO: 환경에 따라 다른 URL 사용
 
 const language = 'en';
 describe('애플리케이션 테스트 케이스', () => {
