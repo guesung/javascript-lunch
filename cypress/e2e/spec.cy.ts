@@ -1,16 +1,16 @@
 import { DEFAULT_RESTAURANT_LIST, LOCAL_STORAGE_KEY_MAP } from '../../src/lib/constants';
-import { ERROR_MESSAGES, LOCAL_HOST_URL, PREVIEW_URL } from './constants';
+import { ERROR_MESSAGES } from './constants';
+import { LanguageType } from './types';
 
-const isCI = process.env.GITHUB_ACTIONS === 'true';
-
-const URL = isCI ? PREVIEW_URL : LOCAL_HOST_URL; // TODO: 환경에 따라 다른 URL 사용
-
-const language = 'en';
+let language: LanguageType = 'en';
 describe('애플리케이션 테스트 케이스', () => {
   beforeEach(() => {
-    cy.visit(URL);
+    cy.visit('/');
     localStorage.setItem(LOCAL_STORAGE_KEY_MAP.restaurants, JSON.stringify(DEFAULT_RESTAURANT_LIST));
+
+    language = navigator.language === 'ko' ? 'ko' : 'en';
   });
+
   describe('정상적인 경우', () => {
     describe('음식점 목록을 확인할 수 있다.', () => {
       describe('카테고리별로 필터링해서 확인할 수 있다.', () => {

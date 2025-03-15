@@ -38,7 +38,10 @@ jobs:
 
       - name: E2E
         uses: cypress-io/github-action@v6
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
         with:
+          command: npm run test-e2e-ci
           build: npm run build
           start: npm run preview
 
