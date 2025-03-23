@@ -1,13 +1,7 @@
 import { concat, flat, map, pipe, reduce, zip } from '@fxts/core';
 import type { HTMLType } from './types';
 
-const escape = (str: string) =>
-  String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
+const escape = (str: string) => String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 export function html(strings: TemplateStringsArray, ...values: any[]) {
   return pipe(
