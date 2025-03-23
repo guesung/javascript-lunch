@@ -1,3 +1,5 @@
+import { forEach } from '@fxts/core';
+
 interface EventCallbackProps {
   event: WindowEventMap[keyof WindowEventMap];
   target: HTMLElement;
@@ -6,32 +8,49 @@ interface EventCallbackProps {
 
 interface AddEventListenerProps {
   eventType: keyof WindowEventMap;
-  callback: (props: EventCallbackProps) => void;
   dataAction: string;
+  callback: (props: EventCallbackProps) => void;
 }
 
 export class EventHandler {
-  #events = new Map<string, { eventType: keyof WindowEventMap; callback: (props: EventCallbackProps) => void }>();
+  #events = new Map<keyof WindowEventMap, { dataAction: string; callback: (props: EventCallbackProps) => void }[]>();
 
   addEventListener({ eventType, callback, dataAction }: AddEventListenerProps) {
-    this.#events.set(dataAction, {
+    const value = this.#events.get(eventType);
+
+    this.#events.set(
       eventType,
-      callback,
-    });
+      value
+        ? [
+            ...value,
+            {
+              callback,
+              dataAction,
+            },
+          ]
+        : [
+            {
+              callback,
+              dataAction,
+            },
+          ],
+    );
   }
 
   attachEventListener() {
-    for (const [dataAction, { eventType, callback }] of this.#events) {
+    for (const [eventType, eventActions] of this.#events) {
       window.addEventListener(eventType, (event) => {
-        const target = event.target as HTMLElement;
-        const currentTarget = target.closest(`[data-action="${dataAction}"]`) as HTMLElement;
+        forEach(({ callback, dataAction }) => {
+          const target = event.target as HTMLElement;
+          const currentTarget = target.closest(`[data-action="${dataAction}"]`) as HTMLElement;
 
-        if (!currentTarget) return;
+          if (!currentTarget) return;
 
-        callback({ event, target, currentTarget });
+          callback({ event, target, currentTarget });
 
-        event.stopImmediatePropagation();
-        event.stopPropagation();
+          event.stopImmediatePropagation();
+          event.stopPropagation();
+        }, eventActions);
       });
     }
   }
