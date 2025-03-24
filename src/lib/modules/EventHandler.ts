@@ -44,9 +44,6 @@ export class EventHandler {
           if (!currentTarget || isNotTriggerTarget) return;
 
           callback({ event, target, currentTarget });
-
-          event.stopImmediatePropagation();
-          event.stopPropagation();
         }, eventActions);
       });
     }
