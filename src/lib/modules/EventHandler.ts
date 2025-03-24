@@ -6,45 +6,35 @@ interface EventCallbackProps {
   currentTarget: HTMLElement;
 }
 
-interface AddEventListenerProps {
-  eventType: keyof WindowEventMap;
-  callback: (props: EventCallbackProps) => void;
+type EventMapKeyType = keyof WindowEventMap;
+interface EventCallback {
   dataAction: string;
+  callback: (props: EventCallbackProps) => void;
   notTriggerDataAction?: string;
 }
 
+interface AddEventListenerProps extends EventCallback {
+  eventType: EventMapKeyType;
+}
+
 export class EventHandler {
-  #events = new Map<
-    keyof WindowEventMap,
-    { dataAction: string; callback: (props: EventCallbackProps) => void; notTriggerDataAction?: string }[]
-  >();
+  #eventMap = new Map<EventMapKeyType, EventCallback[]>();
 
   addEventListener({ eventType, callback, dataAction, notTriggerDataAction }: AddEventListenerProps) {
-    const value = this.#events.get(eventType);
+    const value = this.#eventMap.get(eventType);
 
-    this.#events.set(
-      eventType,
-      value
-        ? [
-            ...value,
-            {
-              callback,
-              dataAction,
-              notTriggerDataAction,
-            },
-          ]
-        : [
-            {
-              callback,
-              dataAction,
-              notTriggerDataAction,
-            },
-          ],
-    );
+    this.#eventMap.set(eventType, [
+      ...(value ?? []),
+      {
+        callback,
+        dataAction,
+        notTriggerDataAction,
+      },
+    ]);
   }
 
   attachEventListener() {
-    for (const [eventType, eventActions] of this.#events) {
+    for (const [eventType, eventActions] of this.#eventMap) {
       window.addEventListener(eventType, (event) => {
         forEach(({ callback, dataAction, notTriggerDataAction }) => {
           const target = event.target as HTMLElement;
