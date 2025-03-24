@@ -195,12 +195,14 @@ export default class RestaurantList extends Component<null, RestaurantListState>
 
     eventHandlerInstance.addEventListener({
       eventType: 'click',
-      callback: ({ currentTarget }) => {
+      callback: ({ target, currentTarget }) => {
+        if (target.closest('[data-action="restaurant-like"]')) return;
         this.setState({
           restaurantDetailId: currentTarget.dataset.id,
         });
       },
       dataAction: 'restaurant-detail',
+      notTriggerDataAction: 'restaurant-like',
     });
 
     eventHandlerInstance.addEventListener({

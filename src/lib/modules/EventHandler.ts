@@ -8,14 +8,18 @@ interface EventCallbackProps {
 
 interface AddEventListenerProps {
   eventType: keyof WindowEventMap;
-  dataAction: string;
   callback: (props: EventCallbackProps) => void;
+  dataAction: string;
+  notTriggerDataAction?: string;
 }
 
 export class EventHandler {
-  #events = new Map<keyof WindowEventMap, { dataAction: string; callback: (props: EventCallbackProps) => void }[]>();
+  #events = new Map<
+    keyof WindowEventMap,
+    { dataAction: string; callback: (props: EventCallbackProps) => void; notTriggerDataAction?: string }[]
+  >();
 
-  addEventListener({ eventType, callback, dataAction }: AddEventListenerProps) {
+  addEventListener({ eventType, callback, dataAction, notTriggerDataAction }: AddEventListenerProps) {
     const value = this.#events.get(eventType);
 
     this.#events.set(
@@ -26,12 +30,14 @@ export class EventHandler {
             {
               callback,
               dataAction,
+              notTriggerDataAction,
             },
           ]
         : [
             {
               callback,
               dataAction,
+              notTriggerDataAction,
             },
           ],
     );
@@ -40,11 +46,12 @@ export class EventHandler {
   attachEventListener() {
     for (const [eventType, eventActions] of this.#events) {
       window.addEventListener(eventType, (event) => {
-        forEach(({ callback, dataAction }) => {
+        forEach(({ callback, dataAction, notTriggerDataAction }) => {
           const target = event.target as HTMLElement;
           const currentTarget = target.closest(`[data-action="${dataAction}"]`) as HTMLElement;
+          const isNotTriggerTarget = target.closest(`[data-action="${notTriggerDataAction}"]`) as HTMLElement;
 
-          if (!currentTarget) return;
+          if (!currentTarget || isNotTriggerTarget) return;
 
           callback({ event, target, currentTarget });
 
